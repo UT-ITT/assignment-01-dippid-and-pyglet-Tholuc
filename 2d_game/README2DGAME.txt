@@ -19,3 +19,5 @@ Oh also i used the accelerator as that kinda felt better for me and with my phon
 
 And then i did a highscore that works for the session. Thought highscore that reads data would have been overkill but like this u can atleast play to a personal highscore :)
 
+My highscore with the last setup was 36 :^)
+
