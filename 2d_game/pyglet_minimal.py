@@ -15,7 +15,11 @@ WINDOW_HEIGHT = 600
 CAT_SIZE = (50, 60)
 
 CAT_SPEED = 8
-CAT_DAMPING = 0.9
+CAT_DAMPING = 0.80
+CAT_MAX_SPEED = 12
+
+INPUT_DEADZONE = 0.1
+DIRECTION_IMPACT = 0.35
 
 DOG_BASESPEED = 2.5
 
@@ -191,12 +195,22 @@ def update(dt):
 
     if data:
         # ax/y = x and y directions from DIPPID, also we swap x and y because that worked better on my phone since i could hold it horizontally
-        ax = data["y"] * CAT_SPEED
-        ay = data["x"] * CAT_SPEED
+        # raw ax/y is just without the deadzone
+        
+        ax_raw = data["y"]
+        ay_raw = data["x"]
 
-        velocity_x = velocity_x * CAT_DAMPING + ax * 0.2
-        velocity_y = velocity_y * CAT_DAMPING + ay * 0.2
+        ax = ax_raw * CAT_SPEED if abs(ax_raw) > INPUT_DEADZONE else 0
+        ay = ay_raw * CAT_SPEED if abs(ay_raw) > INPUT_DEADZONE else 0
 
+
+        velocity_x = velocity_x * CAT_DAMPING + ax * DIRECTION_IMPACT
+        velocity_y = velocity_y * CAT_DAMPING + ay * DIRECTION_IMPACT
+        
+
+        velocity_x = max(-CAT_MAX_SPEED, min(CAT_MAX_SPEED, velocity_x))
+        velocity_y = max(-CAT_MAX_SPEED, min(CAT_MAX_SPEED, velocity_y))
+    
     # move cat
     for part in cat:
         part.x += velocity_x
