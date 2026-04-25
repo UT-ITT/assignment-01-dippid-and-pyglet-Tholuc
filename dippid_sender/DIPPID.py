@@ -210,8 +210,10 @@ class SensorWiimote(Sensor):
 
 # close the program softly when ctrl+c is pressed
 def handle_interrupt_signal(signal, frame):
+    print("interrupt")
     for sensor in Sensor.instances:
         sensor.disconnect()
     sys.exit(0)
+    
 
 signal.signal(signal.SIGINT, handle_interrupt_signal)
